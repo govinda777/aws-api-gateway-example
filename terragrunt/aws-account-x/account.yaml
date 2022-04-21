@@ -1,0 +1,7 @@
+# AWS Account details
+account_name: "aws-account-x"
+aws_account_id: "xxxxxxxxxxxx" # AWS Account ID (12 digits)
+aws_region: "us-east-1"
+aws_zones: ["a", "b"]
+
+# New Relic

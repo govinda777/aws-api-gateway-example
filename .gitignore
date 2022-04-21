@@ -1,0 +1,6 @@
+.vscode/
+node_modules/
+yarn.lock
+.DS_Store
+.terragrunt-cache/
+.terraform.lock.hcl
