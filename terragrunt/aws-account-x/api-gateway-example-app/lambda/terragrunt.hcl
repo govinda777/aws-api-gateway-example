@@ -15,7 +15,7 @@ include {
 inputs = {
   concurrency     = 1
   function_name   = "${local.env.resource_name_prefix}-sample-lambda"
-  handler         = "index.handler"
+  handler         = "src/index.handler"
   runtime         = "nodejs14.x"
   lambda_iam_policy = templatefile("policy.json", {
     account_id            = local.account.aws_account_id
@@ -28,6 +28,7 @@ inputs = {
   memory_size    = 512
 
   environment = {
+    APP_NAME   = "Lambda_4_api_gateway_example"
   }
 
   description          = "a simple lambda function"
