@@ -13,5 +13,5 @@ include {
 }
 
 inputs = {
-  domain_name = "*.api-gateway-example.com"
+  domain_name = format("%s.%s", "*", local.env.domain.public)
 }

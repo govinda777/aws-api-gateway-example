@@ -17,7 +17,7 @@ include {
 }
 
 inputs = {
-  domain_name = "api-gateway-example.com"
-  source_domain_name = "users.api-gateway-example.com"
+  domain_name = local.env.domain.public
+  source_domain_name = format("%s.%s", "users", local.env.domain.public)
   target_domain_name = dependency.apigateway.outputs.target_domain_name
 }

@@ -23,7 +23,7 @@ include {
 inputs = {
   api_gateway_name = "api-gateway-example"
   api_gateway_description = "An example API Gateway"
-  api_gateway_domain_name = "users.api-gateway-example.com"
+  api_gateway_domain_name = format("%s.%s", "users", local.env.domain.public)
   acm_certificate_arn = dependency.acm.outputs.arn
   lambda_invoke_arn = dependency.lambda.outputs.invoke_arn
   lambda_arn = dependency.lambda.outputs.arn
