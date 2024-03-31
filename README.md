@@ -1,40 +1,40 @@
-# AWS API Gateway provisioning example
+# Exemplo de provisionamento do AWS API Gateway
 
-This example repository showcases the deployment of infrastructure and services using terragrunt. The example shows how to deploy some services such as AWS API Gateway, a lambda etc. It uses AWS S3 to store the remote terraform state. 
+Este repositório de exemplo demonstra a implantação de infraestrutura e serviços usando o terragrunt. O exemplo mostra como implantar alguns serviços, como AWS API Gateway, uma lambda, etc. Ele utiliza o AWS S3 para armazenar o estado do terraform remoto.
 
-## Target Infrastructure
+## Infraestrutura Alvo
 
-The following figure shows a very simplified architecture overview of the target infrastructure. It hides a lot of details such as IAM, Cloudwatch, Hosted Zone etc.
+A figura a seguir mostra uma visão geral simplificada da arquitetura da infraestrutura alvo. Ela oculta muitos detalhes, como IAM, Cloudwatch, Zona Hospedada, etc.
 
-![Simplified Target Architecture](./index.png)
+![Arquitetura Alvo Simplificada](./index.png)
 
-## Project Structure
+## Estrutura do Projeto
 
-- `lambda`: The sample javascript lambda
+- `lambda`: A amostra de lambda em javascript
 
-- `terragrunt/modules`: This directory contains all the terragrunt custom modules. Each module contains multiple terraform files that are logically separated based on which resource it creates / modifies. They also include `inputs.tf` file which defines all the inputs needed for the module and `outputs.tf` file that defined the outputs that are exported by the module.
+- `terragrunt/modules`: Este diretório contém todos os módulos personalizados do terragrunt. Cada módulo contém vários arquivos terraform que são separados logicamente com base no recurso que cria/modifica. Eles também incluem o arquivo `inputs.tf`, que define todas as entradas necessárias para o módulo, e o arquivo `outputs.tf`, que define as saídas exportadas pelo módulo.
 
-- `terragrunt/aws-account-x`: This directory contains the terragrunt deployment files. In this app, the deployment is separated per application. That is `api-gateway-example-app`, the example app. Inside each application, there is again logical separation for each dependencies eg: `api-gateway-example-app/lambda`, `api-gateway-example-app/route53`, `api-gateway-example-app/api-gateway` etc. 
+- `terragrunt/aws-account-x`: Este diretório contém os arquivos de implantação do terragrunt. Neste aplicativo, a implantação é separada por aplicativo. Isto é, `api-gateway-example-app`, o aplicativo de exemplo. Dentro de cada aplicativo, há novamente uma separação lógica para cada dependência, por exemplo: `api-gateway-example-app/lambda`, `api-gateway-example-app/route53`, `api-gateway-example-app/api-gateway`, etc.
 
-- Some times you also need to setup account level resources that are shared across multiple applications. These goes to `terragrunt/aws-account-x/account-level-resources`.
+- Às vezes, você também precisa configurar recursos de nível de conta que são compartilhados entre vários aplicativos. Estes vão para `terragrunt/aws-account-x/account-level-resources`.
 
-## Deployment
+## Implantação
 
-- Set your aws account related details in `terragrunt/aws-account-x/account.yaml` file such as account number, zones etc
-- You also may want to update details such as domain name, etc in most of the `terragrunt.hcl` files, `env.yaml` & `global.yaml` files
-- Install `aws`, `node`, `yarn`, `terraform` and `terragrunt` cli tools
-- Configure `aws` cli. See [AWS documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) for more details
-- Login to your aws account using cli
-- Verify you have logged in successfully by running some commands such as `aws ec2 describe-instances`
-- `terragrunt plan` command will show the deployment plan like what resources needs to be added, modified or removed
-- `terragrunt apply` command will apply the changes to your AWS resources
-- For the first time deployment follow the order `lambda`, `acm`, `api-gteway` and `route53`
+- Defina os detalhes relacionados à sua conta aws no arquivo `terragrunt/aws-account-x/account.yaml`, como número da conta, zonas etc.
+- Você também pode querer atualizar detalhes como nome de domínio, etc, na maioria dos arquivos `terragrunt.hcl`, `env.yaml` & `global.yaml`
+- Instale as ferramentas de linha de comando `aws`, `node`, `yarn`, `terraform` e `terragrunt`
+- Configure o cli do `aws`. Veja a [documentação da AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) para mais detalhes
+- Faça login na sua conta aws usando o cli
+- Verifique se você fez login com sucesso executando alguns comandos, como `aws ec2 describe-instances`
+- O comando `terragrunt plan` mostrará o plano de implantação, como quais recursos precisam ser adicionados, modificados ou removidos
+- O comando `terragrunt apply` aplicará as mudanças aos seus recursos da AWS
+- Para a primeira implantação, siga a ordem `lambda`, `acm`, `api-gateway` e `route53`
 
-### Sample Lambda
+### Exemplo de Lambda
 
-#### Building Lambda
+#### Construindo Lambda
 
-You can use your favourite tool (`npm` or `yarn`) to build the lambda
+Você pode usar sua ferramenta favorita (`npm` ou `yarn`) para construir a lambda
 
 ```sh
 cd lambda
@@ -42,7 +42,7 @@ yarn install
 yarn zip
 ```
 
-#### Deploying Lambda
+#### Implementando Lambda
 
 ```sh
 cd terragrunt/aws-account-x/api-gateway-example-app/lambda 
@@ -50,11 +50,11 @@ terragrunt plan
 terragrunt apply
 ```
 
-### Sample API Gateway
+### Exemplo de API Gateway
 
 #### ACM (AWS Certificate Manager)
 
-You need to first deploy your SSL certificate to ACM or create a new one using ACM. You only need to do this only when you have new certificate (for eg: a renewed certificate). In our example app case, we are creating a new `DNS` based certificate using ACM.
+Você precisa primeiro implantar seu certificado SSL no ACM ou criar um novo usando o ACM. Você só precisa fazer isso quando tiver um novo certificado (por exemplo: um certificado renovado). No caso do nosso aplicativo de exemplo, estamos criando um novo certificado baseado em `DNS` usando o ACM.
 
 ```sh
 cd terragrunt/aws-account-x/api-gateway-example-app/acm 
@@ -62,7 +62,7 @@ terragrunt plan
 terragrunt apply
 ```
 
-#### API Gateway
+#### API Gateway -- Parei aqui !!
 
 ```sh
 cd terragrunt/aws-account-x/api-gateway-example-app/api-gateway 
@@ -72,7 +72,7 @@ terragrunt apply
 
 #### Route53
 
-In our example app case, we are using AWS Route53 as our DNS server. You may need to deploy this only once unless you need to change your routing information.
+No caso do nosso aplicativo de exemplo, estamos usando o AWS Route53 como nosso servidor DNS. Você pode precisar implantar isso apenas uma vez, a menos que precise alterar suas informações de roteamento.
 
 ```sh
 cd terragrunt/aws-account-x/api-gateway-example-app/route53 
@@ -80,6 +80,8 @@ terragrunt plan
 terragrunt apply
 ```
 
-## Testing
+## Testando
 
-Do a `POST` request to the endpoint `users.{YOUR_DOMAIN_NAME_HERE}/users` with any payload & check the response
+Faça um
+
+ pedido `POST` para o endpoint `users.{SEU_DOMINIO_AQUI}/users` com qualquer carga e verifique a resposta

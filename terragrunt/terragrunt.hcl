@@ -26,7 +26,7 @@ generate "providers" {
   if_exists = "overwrite_terragrunt"
   contents = templatefile("providers.tpl", {
     # AWS Provider
-    aws_version      = try(local.providers.locals.aws_provider.version, "~> 4.9.0")
+    aws_version      = try(local.providers.locals.aws_provider.version, "~> 5.0")
     aws_region       = try(local.providers.locals.aws_provider.region, local.account.aws_region)
     aws_account_id   = local.account.aws_account_id
     ignore_updatedby = get_terraform_command() == "plan"
